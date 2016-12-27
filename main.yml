@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description:
+  generic cloudformation main template
+
+Resources:
+  InfraVpc:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3-ap-northeast-1.amazonaws.com/pahud-cfn-templates/cfn-nginx-loadbalancer-vpc.yml
+      TimeoutInMinutes: 60 
+
+  InfraEc2Elb:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3-ap-northeast-1.amazonaws.com/pahud-cfn-templates/cfn-nginx-loadbalancer-ec2elb.yml
+      TimeoutInMinutes: 60  
+      Parameters:
+        "VpcStackName" : {"Fn::GetAtt": ["InfraVpc", "Outputs.StackName"] }   
+
